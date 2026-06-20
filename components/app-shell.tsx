@@ -12,7 +12,13 @@ type Profile = {
   role: "owner" | "colleague";
 };
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  children,
+  requireOwner = false,
+}: {
+  children: React.ReactNode;
+  requireOwner?: boolean;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -36,6 +42,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         .eq("id", user.id)
         .single();
 
+      if (requireOwner && data?.role !== "owner") {
+        router.replace("/");
+        return;
+      }
+
       if (active) {
         setProfile(data as Profile);
         setLoading(false);
@@ -46,7 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => {
       active = false;
     };
-  }, [router]);
+  }, [router, requireOwner]);
 
   async function handleLogout() {
     await supabase.auth.signOut();
