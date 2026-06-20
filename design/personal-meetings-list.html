@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>개인미팅 목록 - 접점</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f8f9ff",
+                    "inverse-primary": "#49e182",
+                    "on-error": "#ffffff",
+                    "primary-container": "#2dcc70",
+                    "on-secondary-container": "#4c6860",
+                    "on-primary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#424846",
+                    "on-secondary-fixed": "#04201a",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#006d36",
+                    "inverse-surface": "#213145",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#005227",
+                    "surface-bright": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#bbcbbb",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary": "#006d36",
+                    "secondary": "#48645c",
+                    "surface-container": "#e5eeff",
+                    "on-primary-fixed": "#00210c",
+                    "tertiary": "#5a605d",
+                    "on-primary-container": "#005026",
+                    "on-tertiary-container": "#414644",
+                    "secondary-container": "#c8e6dc",
+                    "on-surface-variant": "#3d4a3e",
+                    "primary-fixed-dim": "#49e182",
+                    "surface-container-low": "#eff4ff",
+                    "on-background": "#0b1c30",
+                    "secondary-fixed": "#cbe9df",
+                    "secondary-fixed-dim": "#afcdc3",
+                    "primary-fixed": "#6afe9b",
+                    "surface-container-high": "#dce9ff",
+                    "tertiary-fixed-dim": "#c2c8c5",
+                    "on-secondary-fixed-variant": "#314c44",
+                    "on-tertiary-fixed": "#171d1b",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#d3e4fe",
+                    "tertiary-fixed": "#dee4e1",
+                    "outline": "#6c7b6d",
+                    "on-surface": "#0b1c30",
+                    "tertiary-container": "#afb4b1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "margin-desktop": "32px",
+                    "base": "4px",
+                    "xl": "40px",
+                    "container-padding": "16px",
+                    "stack-gap": "12px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm-mobile": ["10px", {"lineHeight": "12px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .personal-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+        }
+        .personal-card:active {
+            transform: scale(0.98);
+        }
+        .custom-scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top AppBar -->
+<header class="flex justify-between items-center px-container-padding h-14 w-full fixed top-0 z-50 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">menu</span>
+<h1 class="font-headline-lg text-[24px] font-bold text-primary">접점</h1>
+</div>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-label-md text-label-md hover:opacity-90 transition-opacity">
+            + 새 미팅 작성
+        </button>
+</header>
+<main class="pt-20 pb-24 px-container-padding max-w-2xl mx-auto">
+<!-- Header Section -->
+<section class="mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">개인미팅</h2>
+<!-- Search & Filter Area -->
+<div class="flex gap-2 items-center bg-surface-container-low p-1 rounded-xl border border-outline-variant focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined pl-3 text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full h-[44px] text-body-md placeholder:text-on-surface-variant" placeholder="연락처 검색..." type="text"/>
+<button class="p-2 hover:bg-surface-container-high rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">tune</span>
+</button>
+</div>
+</section>
+<!-- Bento Grid / Cards Container -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap">
+<!-- Personal Contact Card 1 -->
+<div class="personal-card bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly individual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTyZuJRefP6H6pRms1TG8PQralNEAw6VllR9WlzKqYs8_NoL2aE7I2L5H6nx3fgeOwlIaJCxzi4s3G5p2YQ4CdzGfLCNSISQpCc_E0Z8Mw3e3qBxBUzL18i6j6G8EEsPelhdO_9k8uiPtKSLqelC6UupdQ8jrVelSr4yNg8nJLtCzqwfw9TTTtw0WFGMFBwflgV59jJVWUu4PtYteH3DJ486VRrtl8LVWXNFMcM4jjTcKxuYmI_PFAGTUolCya38l_O4TMCF8BdOan"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">김지수</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-md font-label-md">개인</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mt-1">최근 미팅: 2023.10.10</p>
+<div class="flex gap-2 mt-3">
+<button class="flex-1 py-1.5 rounded-lg border border-primary text-primary font-label-md text-label-md hover:bg-primary-container/10">프로필</button>
+<button class="flex-1 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest">기록 보기</button>
+</div>
+</div>
+</div>
+<!-- Personal Contact Card 2 -->
+<div class="personal-card bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a mid-career professional male" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhl4KMGZfQmVcdhvwRER19NhpFxmaexLtLfhgpVk3pUs4lEdrufyCbPXatPCrXTndcTTq-mFzEk3osVUdzxuYSCLA3KqTCtq2z257TYMRiUpm98-UPWN6BR-yyB8NGenvQwd8ccoJCeJ9pKgJrkAPmm_i8a9WT5tjjgRg8G_NTTLShifsSDjMx75pnXkKhDNv3tkVNSesrBKQn00rhoTMbzpv9Rwza49tMXOgVdKkSRWnHICcLRhuAiHVNPPH5uuo2Ohh3AJ6dTEzK"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">이영희</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-md font-label-md">개인</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mt-1">최근 미팅: 2023.10.15</p>
+<div class="flex gap-2 mt-3">
+<button class="flex-1 py-1.5 rounded-lg border border-primary text-primary font-label-md text-label-md hover:bg-primary-container/10">프로필</button>
+<button class="flex-1 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest">기록 보기</button>
+</div>
+</div>
+</div>
+<!-- Personal Contact Card 3 -->
+<div class="personal-card bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young professional woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjc_oJ_mSVD1kbZELIvXUvYPXHwx2ClX92CCqvX14g0jk3_iahU3yHVuoDIjEC-eWs1qMwXTAHgRrd2Sor5iTlLpLBEfTu7GzAQHKzA4FM73TmfMVHGgUaBMM7QFPE3GNgCsIwDmgYAYmzU3S8rQ_z2DBDjQp8Yr4CGAUd20Fb0pvwoREBpTTOBbjreS4YpLKgF0URAcc47hJF-r7-KE3-70uQ0PtcCLsOkRtLcTxBNIuG2H-JYgiYK2nfKL3wH21TDvT44u9IYOjJ"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">박민준</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-md font-label-md">개인</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mt-1">최근 미팅: 2023.09.28</p>
+<div class="flex gap-2 mt-3">
+<button class="flex-1 py-1.5 rounded-lg border border-primary text-primary font-label-md text-label-md hover:bg-primary-container/10">프로필</button>
+<button class="flex-1 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest">기록 보기</button>
+</div>
+</div>
+</div>
+<!-- Personal Contact Card 4 -->
+<div class="personal-card bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A studio portrait of an elderly man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX2egE7plGwkqtc2ID1PWI6kFpCSjyOaD2UjIzsd8g_YSB8lc5-NIzHKhMYfLoNrZnRsj4QgRpL-MB43I1r9uPQagjbkGryzAJSPjXnBB8KG_pAZomBhA9K5f9gM0Sywls1_5d5iBNwMcRmBDQ2aiKLUw3MGsxEb9S_7Wlzlm9y85QO3u9uEW-ZKbae6qcmsfz_POuOkhKVRl9tXmWr9OxXXWD5YDp-mjOcrWnHumN-u3TonPUMesfdfuGbMc7TMlrZWNJLvOuONfp"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">정우성</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-md font-label-md">개인</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mt-1">최근 미팅: 2023.11.02</p>
+<div class="flex gap-2 mt-3">
+<button class="flex-1 py-1.5 rounded-lg border border-primary text-primary font-label-md text-label-md hover:bg-primary-container/10">프로필</button>
+<button class="flex-1 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest">기록 보기</button>
+</div>
+</div>
+</div>
+<!-- Personal Contact Card 5 -->
+<div class="personal-card bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm flex items-start gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a cheerful woman in her late 20s" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnpoSFyLbGUBsL8fVItzo72DHeYdJweehjEyRvgDTXJDoIpp3uTF-G_fRzFb50vNe3QxDOV0TgMBYAwzATFRV4SY8mT3ey4FABFv10rRb-6YfwqefQ8AZyAsQ8GpsIEJz3CmX-bit-1VkrXoUCtjt8r2KZSjV6yUZepYyprcYYmI6Q2tGw6Q89hc1F5Vm8FYXbxl0hXOj3S6Pc0O5OprsjmFVhdu-coo8fkyFsfg77xF3_eKWfBKR0yigvUAuEIat0vR4ZQ1sptQK6"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">한소희</h3>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-md font-label-md">개인</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mt-1">최근 미팅: 2023.10.25</p>
+<div class="flex gap-2 mt-3">
+<button class="flex-1 py-1.5 rounded-lg border border-primary text-primary font-label-md text-label-md hover:bg-primary-container/10">프로필</button>
+<button class="flex-1 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest">기록 보기</button>
+</div>
+</div>
+</div>
+</div>
+<!-- FAB for Quick Actions -->
+<button class="fixed bottom-20 right-6 w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center bg-surface px-2 pb-safe border-t border-outline-variant shadow-sm h-16">
+<!-- Home Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors w-full h-full" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm-mobile">홈</span>
+</a>
+<!-- Work Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors w-full h-full" href="#">
+<span class="material-symbols-outlined">business_center</span>
+<span class="font-label-sm text-label-sm-mobile">업무미팅</span>
+</a>
+<!-- Personal Tab (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold scale-95 transition-transform w-full h-full" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm-mobile">개인미팅</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for active state scaling on nav items
+        const navItems = document.querySelectorAll('nav a');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                navItems.forEach(nav => {
+                    nav.classList.remove('text-primary', 'font-bold', 'scale-95');
+                    nav.classList.add('text-on-surface-variant');
+                    const icon = nav.querySelector('.material-symbols-outlined');
+                    if(icon) icon.style.fontVariationSettings = "'FILL' 0";
+                });
+                item.classList.add('text-primary', 'font-bold', 'scale-95');
+                item.classList.remove('text-on-surface-variant');
+                const icon = item.querySelector('.material-symbols-outlined');
+                if(icon) icon.style.fontVariationSettings = "'FILL' 1";
+            });
+        });
+
+        // Hover effect for cards
+        const cards = document.querySelectorAll('.personal-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('shadow-md');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('shadow-md');
+            });
+        });
+    </script>
+</body></html>

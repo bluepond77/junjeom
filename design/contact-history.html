@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8f9ff;
+            color: #0b1c30;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #bbcbbb;
+            z-index: 0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9ff",
+                        "inverse-primary": "#49e182",
+                        "on-error": "#ffffff",
+                        "primary-container": "#2dcc70",
+                        "on-secondary-container": "#4c6860",
+                        "on-primary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#424846",
+                        "on-secondary-fixed": "#04201a",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#006d36",
+                        "inverse-surface": "#213145",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#005227",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#bbcbbb",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary": "#006d36",
+                        "secondary": "#48645c",
+                        "surface-container": "#e5eeff",
+                        "on-primary-fixed": "#00210c",
+                        "tertiary": "#5a605d",
+                        "on-primary-container": "#005026",
+                        "on-tertiary-container": "#414644",
+                        "secondary-container": "#c8e6dc",
+                        "on-surface-variant": "#3d4a3e",
+                        "primary-fixed-dim": "#49e182",
+                        "surface-container-low": "#eff4ff",
+                        "on-background": "#0b1c30",
+                        "secondary-fixed": "#cbe9df",
+                        "secondary-fixed-dim": "#afcdc3",
+                        "primary-fixed": "#6afe9b",
+                        "surface-container-high": "#dce9ff",
+                        "tertiary-fixed-dim": "#c2c8c5",
+                        "on-secondary-fixed-variant": "#314c44",
+                        "on-tertiary-fixed": "#171d1b",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d3e4fe",
+                        "tertiary-fixed": "#dee4e1",
+                        "outline": "#6c7b6d",
+                        "on-surface": "#0b1c30",
+                        "tertiary-container": "#afb4b1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "16px",
+                        "grid-gutter": "8px",
+                        "stack-gap": "12px",
+                        "input-height": "44px",
+                        "inline-padding": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-container-padding h-14 w-full fixed top-0 z-50 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high transition-colors p-2 rounded-full">arrow_back</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">김후원 님</h1>
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded-full font-label-md text-[11px] leading-tight">기부자</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="font-label-md text-label-md text-primary bg-surface hover:bg-surface-container-high px-4 py-2 rounded-lg transition-colors border border-outline-variant">
+            + 새 미팅 작성
+        </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-24 px-container-padding max-w-2xl mx-auto min-h-screen">
+<!-- Profile Quick Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 mb-8 shadow-sm flex items-center gap-4">
+<div class="w-16 h-16 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a middle-aged Korean man with a friendly and warm expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPUvL1F8ZhdPMmxQ4qeCE5d8_Cn-S3HxIPSZdC4jEVT6U_wwazGl46JM_u2nATBPEIyiqT8wAfD8rEYfhzzgFLKAm3QqfRHOWh1Tk3rcXb-nytP9LlWCXSdq32MrZJQXimWa0ijJ6cSvKPV6ncz6AT7hUc1D4Nt7Tb_Ot0Ytl9b4deVk-Tcf7pyRNDHm05BINyYcFiiN5E4RkntTqaHGNT20f8JCe1RMJktCn9m-dIfEQ3EPm3hXVWORXX8cuqebM32ws2iyEVoSL5"/>
+</div>
+<div>
+<p class="font-headline-md text-xl leading-tight">김후원</p>
+<p class="font-body-sm text-on-surface-variant mt-0.5">정기 후원 5년차 · 그린피스 앰배서더</p>
+<div class="flex gap-2 mt-2">
+<span class="font-label-md text-[11px] px-2 py-1 bg-secondary-container text-on-secondary-container rounded">개인</span>
+<span class="font-label-md text-[11px] px-2 py-1 bg-surface-container-high text-on-surface-variant rounded">VIP</span>
+</div>
+</div>
+</div>
+<!-- History Section Header -->
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-lg">접점 히스토리</h2>
+<button class="material-symbols-outlined text-on-surface-variant">filter_list</button>
+</div>
+<!-- Timeline -->
+<div class="relative timeline-line space-y-8">
+<!-- Timeline Item 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center bg-background z-10">
+<div class="w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-primary/10"></div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant">2023.10.15</span>
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded font-label-md text-[11px]">업무</span>
+</div>
+<h3 class="font-body-md font-bold mb-1 text-on-surface">정기 기부 증액 관련 미팅</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-2">북극 보호 캠페인에 대한 깊은 관심을 표명하셨으며, 기존 월 3만원에서 5만원으로 증액 의사를 확인하였습니다.</p>
+<div class="mt-3 pt-3 border-t border-outline-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">person</span>
+<span class="font-label-md text-[12px] text-on-surface-variant">담당자: 홍길동</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center bg-background z-10">
+<div class="w-3.5 h-3.5 rounded-full bg-secondary-container ring-4 ring-secondary-container/30"></div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant">2023.08.22</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-label-md text-[11px]">개인</span>
+</div>
+<h3 class="font-body-md font-bold mb-1 text-on-surface">지인 소개 및 캠페인 피드백</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-2">사무실 방문하여 주변 지인 2명을 신규 후원자로 매칭해주셨습니다. 최근 발송된 뉴스레터 디자인에 대한 긍정적인 피드백을 주심.</p>
+<div class="mt-3 pt-3 border-t border-outline-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">person</span>
+<span class="font-label-md text-[12px] text-on-surface-variant">담당자: 이영희</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center bg-background z-10">
+<div class="w-3.5 h-3.5 rounded-full bg-outline"></div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant">2023.05.10</span>
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded font-label-md text-[11px]">전화</span>
+</div>
+<h3 class="font-body-md font-bold mb-1 text-on-surface">정기 후원 4주년 기념 감사 인사</h3>
+<p class="font-body-sm text-on-surface-variant">4주년 기념 굿즈 수령 확인 및 안부 전화. 현재 진행 중인 플라스틱 감축 캠페인 참여 독려.</p>
+<div class="mt-3 pt-3 border-t border-outline-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">person</span>
+<span class="font-label-md text-[12px] text-on-surface-variant">담당자: 홍길동</span>
+</div>
+</div>
+</div>
+<!-- Timeline Item 4 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center bg-background z-10">
+<div class="w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-primary/10"></div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant">2022.12.15</span>
+<span class="bg-primary/10 text-primary px-2 py-0.5 rounded font-label-md text-[11px]">업무</span>
+</div>
+<h3 class="font-body-md font-bold mb-1 text-on-surface">연말 세액공제 문의 및 기부 증명서 발급</h3>
+<p class="font-body-sm text-on-surface-variant">연말 정산을 위한 기부금 영수증 발급 방법 안내. 이메일로 즉시 발송 처리함.</p>
+<div class="mt-3 pt-3 border-t border-outline-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">person</span>
+<span class="font-label-md text-[12px] text-on-surface-variant">담당자: 관리팀</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-12 py-4 border-2 border-dashed border-outline-variant rounded-xl text-on-surface-variant font-label-md flex flex-col items-center justify-center gap-1 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+        이전 히스토리 더보기
+    </button>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center bg-surface px-2 pb-safe border-t border-outline-variant h-16 shadow-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low px-4 py-1 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-[11px]">홈</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold hover:bg-surface-container-low px-4 py-1 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">business_center</span>
+<span class="font-label-md text-[11px]">업무미팅</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low px-4 py-1 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-[11px]">개인미팅</span>
+</a>
+</nav>
+<!-- Interactive Layer: Hover and Micro-interactions -->
+<script>
+    // Simple Fade-in for timeline elements on load
+    window.addEventListener('DOMContentLoaded', () => {
+        const items = document.querySelectorAll('.relative.pl-10');
+        items.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`;
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, 50);
+        });
+    });
+</script>
+</body></html>
