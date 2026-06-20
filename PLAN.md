@@ -129,7 +129,7 @@ Next.js (App Router, TypeScript) · Tailwind CSS · shadcn/ui · Supabase (Auth 
 - [x] 기획 완료
 - [x] Stitch 프로토타입
 - [x] 연결 (GitHub · Vercel · Supabase · Google Calendar OAuth)
-- [ ] 구현: 로그인 + 역할 기반 메뉴
+- [x] 구현: 로그인 + 역할 기반 메뉴
 - [ ] 구현: 홈(대시보드)
 - [ ] 구현: 업무미팅 (목록+작성/상세)
 - [ ] 구현: 대상자별 히스토리
