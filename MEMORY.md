@@ -68,3 +68,12 @@
   - `profiles`·`contacts`·`work_meetings`·`personal_meetings`·`google_tokens` 5개 테이블 모두 `enable row level security` 적용 확인.
   - 6번 검사(민감정보 평문)에서 `card`·`password` 키워드가 잡혔지만 모두 오탐: `card`는 shadcn UI 디자인 토큰(`bg-card`), `password`는 로그인 폼 필드로 `supabase.auth.signInWithPassword()`를 거쳐 Supabase Auth가 처리하므로 우리 DB에 평문으로 저장되지 않음.
 - **남은 위험**: 이름 기반 휴리스틱 검사라 한계가 있음 — 개인미팅의 `health_notes`·`family_info` 등은 법상 암호화 의무 대상(주민번호·카드·생체정보 등)은 아니지만 민감한 개인정보이며, 현재는 평문 저장 + RLS(owner_id 본인만 접근)로만 보호하고 있음. 의무 대상은 아니라 암호화하지 않았지만, 추후 요구사항이 바뀌면 재검토 필요.
+
+### [2026-06-20] URL 변경 + 디자인 전면 변경
+- **URL**: `junjeom.vercel.app` → `jeobjeom.vercel.app`로 변경 요청. Vercel 프로젝트 자체를 `vercel project rename junjeom jeobjeom`으로 바꿨지만, *.vercel.app 기본 도메인은 프로젝트 생성 시점 이름(junjeom)에 그대로 고정돼 바뀌지 않았다. 그래서 `vercel alias set <production-deployment-url> jeobjeom.vercel.app`로 별도 별칭을 만들어 새 도메인을 붙였다.
+  - **막힌 점**: 처음 별칭을 걸었을 때 jeobjeom.vercel.app이 401("Vercel Authentication") 페이지를 띄웠다. `vercel project protection jeobjeom`으로 확인해보니 `ssoProtection.deploymentType: "all_except_custom_domains"` — 즉 프로젝트 생성 시 자동 할당된 도메인(junjeom.vercel.app)만 보호를 건너뛰고, 그 외 별칭은 전부 SSO 보호를 받는 구조였다. `vercel project protection disable jeobjeom --sso`로 해제하고 나서야 새 별칭이 정상 동작했다.
+  - **막힌 점 2 (디자인 변경 직후 재발)**: 디자인 변경을 배포했는데 사용자가 "변화되지 않았다"고 함. 확인해보니 `jeobjeom.vercel.app` 별칭은 **별칭을 만든 시점의 특정 배포(deployment ID)에 고정**되는 방식이라, 그 이후 새로 푸시한 배포들을 자동으로 따라가지 않았다(반면 프로젝트의 원래 도메인 junjeom.vercel.app은 항상 최신 production 배포를 추적함). 그래서 jeobjeom.vercel.app은 과거 시점의 정적 스냅샷을 계속 보여주고 있었던 것 — `vercel ls`로 최신 배포 URL을 확인하고 `vercel alias set <최신-배포-url> jeobjeom.vercel.app`을 다시 실행해야 했다.
+  - **다음에 참고할 점**: 프로젝트 이름과 다른 *.vercel.app 별칭을 쓰는 한, **배포할 때마다 별칭을 재연결**해야 한다(자동 추적이 안 됨). 번거로움을 없애려면 처음부터 프로젝트 이름을 원하는 도메인 이름으로 생성하거나, 실제 커스텀 도메인(직접 구매한 도메인)을 연결하는 게 근본적인 해법이다.
+- **사용자명**: `profiles.role = 'owner'` 행의 `display_name`을 "오쿠박" → "박정배"로 SQL UPDATE.
+- **디자인 전면 변경**: 사용자가 그린피스 공식 디자인 시스템 문서(딥 네이비 `#292F47` + 라임그린 `#66CC00` + 오렌지 `#FF8100`)를 그대로 적용해 달라고 요청. `app/globals.css`의 shadcn 색상 변수를 전부 이 팔레트로 교체하고, 사이드바는 `bg-sidebar`(네이비) + `text-sidebar-foreground`(흰색) + `sidebar-primary`(라임, 활성 메뉴·로고)로 명시적으로 분리해서 메인 콘텐츠 영역의 `--primary`(오렌지, CTA 버튼 전용)와 섞이지 않게 했다. 링크류(Button/Badge의 `link` variant, "히스토리 보기" 링크)는 스펙상 라임그린이 맞아서 `text-[#66cc00]`로 별도 지정했다 — `--primary`를 그대로 쓰면 오렌지(버튼 색)가 링크에도 묻어 나오기 때문.
+  - 처음 빌드해서 로컬 확인은 통과했지만, 위에 적은 별칭 고정 문제 때문에 라이브에서는 안 보였다 — 코드는 처음부터 맞았다.
