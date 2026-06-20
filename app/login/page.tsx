@@ -33,11 +33,11 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background p-4">
+    <main className="flex min-h-screen items-center justify-center bg-sidebar p-4">
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight text-primary">접점</h1>
-          <p className="mt-2 text-muted-foreground">모금 전문가를 위한 접점 관리 시스템</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-sidebar-primary">접점</h1>
+          <p className="mt-2 text-sidebar-foreground/70">모금 전문가를 위한 접점 관리 시스템</p>
         </div>
 
         <div className="rounded-xl border border-border bg-card p-8 shadow-sm">

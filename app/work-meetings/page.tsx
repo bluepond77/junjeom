@@ -286,7 +286,7 @@ export default function WorkMeetingsPage() {
                       {meeting.contact && (
                         <Link
                           href={`/work-meetings/contacts/${meeting.contact.id}`}
-                          className="text-sm font-medium text-primary hover:underline"
+                          className="text-sm font-medium text-[#66cc00] hover:underline"
                         >
                           {meeting.contact.name} 님과의 히스토리 보기 →
                         </Link>

@@ -89,10 +89,10 @@ export function AppShell({
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="flex w-56 flex-col border-r border-border bg-sidebar p-4">
+      <aside className="flex w-56 flex-col bg-sidebar p-4">
         <div className="mb-8 px-2">
-          <h1 className="text-xl font-bold text-primary">접점</h1>
-          <p className="mt-1 text-xs text-muted-foreground">{profile.display_name}</p>
+          <h1 className="text-xl font-bold text-sidebar-primary">접점</h1>
+          <p className="mt-1 text-xs text-sidebar-foreground/70">{profile.display_name}</p>
         </div>
 
         <nav className="flex-1 space-y-1">
@@ -103,10 +103,10 @@ export function AppShell({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                className={`flex items-center gap-2 rounded-lg border-l-4 px-3 py-2 text-sm transition-colors ${
                   active
-                    ? "border-l-4 border-primary bg-secondary font-medium text-foreground"
-                    : "border-l-4 border-transparent text-muted-foreground hover:bg-secondary"
+                    ? "border-sidebar-primary bg-sidebar-accent font-medium text-sidebar-primary"
+                    : "border-transparent text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -119,10 +119,10 @@ export function AppShell({
         {profile.role === "owner" && (
           <a
             href="/api/auth/google/start"
-            className={`mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
+            className={`mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
               calendarConnected
-                ? "text-muted-foreground"
-                : "text-primary hover:bg-secondary"
+                ? "text-sidebar-foreground/70"
+                : "text-sidebar-primary hover:bg-sidebar-accent"
             }`}
           >
             {calendarConnected ? (
@@ -139,7 +139,11 @@ export function AppShell({
           </a>
         )}
 
-        <Button variant="ghost" className="justify-start gap-2" onClick={handleLogout}>
+        <Button
+          variant="ghost"
+          className="justify-start gap-2 text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+          onClick={handleLogout}
+        >
           <LogOut className="h-4 w-4" />
           로그아웃
         </Button>
