@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
   ClipboardCheck,
+  CalendarSync,
 } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -69,6 +71,7 @@ export default function WorkMeetingsPage() {
   const [content, setContent] = useState("");
   const [followUp, setFollowUp] = useState("");
   const [followUpDue, setFollowUpDue] = useState("");
+  const [syncToCalendar, setSyncToCalendar] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -131,19 +134,37 @@ export default function WorkMeetingsPage() {
       contactId = newContact.id;
     }
 
-    const { error: meetingError } = await supabase.from("work_meetings").insert({
-      contact_id: contactId,
-      occurred_at: new Date(occurredAt).toISOString(),
-      content,
-      follow_up: followUp || null,
-      follow_up_due: followUpDue || null,
-      created_by: userId,
-    });
+    const { data: newMeeting, error: meetingError } = await supabase
+      .from("work_meetings")
+      .insert({
+        contact_id: contactId,
+        occurred_at: new Date(occurredAt).toISOString(),
+        content,
+        follow_up: followUp || null,
+        follow_up_due: followUpDue || null,
+        created_by: userId,
+      })
+      .select("id")
+      .single();
 
-    if (meetingError) {
+    if (meetingError || !newMeeting) {
       setSubmitError("미팅을 저장하지 못했어요.");
       setSubmitting(false);
       return;
+    }
+
+    if (syncToCalendar && followUp && followUpDue) {
+      await fetch("/api/calendar/create-event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          meetingType: "work",
+          meetingId: newMeeting.id,
+          summary: `[업무] ${contactName} - 후속작업`,
+          description: followUp,
+          dueDate: followUpDue,
+        }),
+      });
     }
 
     setSubmitting(false);
@@ -332,6 +353,20 @@ export default function WorkMeetingsPage() {
                 onChange={(e) => setFollowUpDue(e.target.value)}
               />
             </div>
+
+            {followUp && followUpDue && (
+              <div className="flex items-center justify-between rounded-lg border border-border p-3">
+                <Label htmlFor="syncToCalendar" className="flex items-center gap-2">
+                  <CalendarSync className="h-4 w-4 text-primary" />
+                  캘린더에 자동 등록
+                </Label>
+                <Switch
+                  id="syncToCalendar"
+                  checked={syncToCalendar}
+                  onCheckedChange={setSyncToCalendar}
+                />
+              </div>
+            )}
 
             {submitError && <p className="text-sm text-red-600">{submitError}</p>}
 

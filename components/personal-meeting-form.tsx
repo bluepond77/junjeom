@@ -2,11 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Loader2, Info, HeartHandshake, StickyNote, ClipboardCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  Loader2,
+  Info,
+  HeartHandshake,
+  StickyNote,
+  ClipboardCheck,
+  CalendarSync,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -56,6 +66,7 @@ export function PersonalMeetingForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [syncToCalendar, setSyncToCalendar] = useState(true);
 
   function set<K extends keyof PersonalMeetingData>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -80,6 +91,8 @@ export function PersonalMeetingForm({
       follow_up: form.follow_up || null,
       follow_up_due: form.follow_up_due || null,
     };
+
+    let savedId = meetingId;
 
     if (meetingId) {
       const { error } = await supabase
@@ -113,12 +126,30 @@ export function PersonalMeetingForm({
         return;
       }
 
-      setSubmitting(false);
-      router.push(`/personal-meetings/${data.id}`);
-      return;
+      savedId = data.id;
+    }
+
+    if (syncToCalendar && form.follow_up && form.follow_up_due && savedId) {
+      await fetch("/api/calendar/create-event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          meetingType: "personal",
+          meetingId: savedId,
+          summary: `[개인] ${form.contact_name} - 후속작업`,
+          description: form.follow_up,
+          dueDate: form.follow_up_due,
+        }),
+      });
     }
 
     setSubmitting(false);
+
+    if (!meetingId && savedId) {
+      router.push(`/personal-meetings/${savedId}`);
+      return;
+    }
+
     setSaved(true);
   }
 
@@ -286,6 +317,19 @@ export function PersonalMeetingForm({
               onChange={(e) => set("follow_up_due", e.target.value)}
             />
           </div>
+          {form.follow_up && form.follow_up_due && (
+            <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+              <Label htmlFor="syncToCalendar" className="flex items-center gap-2">
+                <CalendarSync className="h-4 w-4 text-primary" />
+                캘린더에 자동 등록
+              </Label>
+              <Switch
+                id="syncToCalendar"
+                checked={syncToCalendar}
+                onCheckedChange={setSyncToCalendar}
+              />
+            </div>
+          )}
         </section>
 
         {error && <p className="text-sm text-red-600">{error}</p>}

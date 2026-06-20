@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { Home, Briefcase, User, LogOut, Loader2 } from "lucide-react";
+import { Home, Briefcase, User, LogOut, Loader2, CalendarCheck, CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 
@@ -23,6 +23,7 @@ export function AppShell({
   const pathname = usePathname();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [calendarConnected, setCalendarConnected] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -50,6 +51,12 @@ export function AppShell({
       if (active) {
         setProfile(data as Profile);
         setLoading(false);
+      }
+
+      if (data?.role === "owner") {
+        const res = await fetch("/api/calendar/status");
+        const status = await res.json();
+        if (active) setCalendarConnected(!!status.connected);
       }
     }
 
@@ -108,6 +115,29 @@ export function AppShell({
             );
           })}
         </nav>
+
+        {profile.role === "owner" && (
+          <a
+            href="/api/auth/google/start"
+            className={`mb-2 flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
+              calendarConnected
+                ? "text-muted-foreground"
+                : "text-primary hover:bg-secondary"
+            }`}
+          >
+            {calendarConnected ? (
+              <>
+                <CalendarCheck className="h-4 w-4" />
+                캘린더 연결됨
+              </>
+            ) : (
+              <>
+                <CalendarPlus className="h-4 w-4" />
+                구글 캘린더 연결
+              </>
+            )}
+          </a>
+        )}
 
         <Button variant="ghost" className="justify-start gap-2" onClick={handleLogout}>
           <LogOut className="h-4 w-4" />

@@ -135,5 +135,5 @@ Next.js (App Router, TypeScript) · Tailwind CSS · shadcn/ui · Supabase (Auth 
 - [x] 구현: 대상자별 히스토리
 - [x] 구현: 개인미팅 목록
 - [x] 구현: 개인미팅 상세/작성
-- [ ] 구현: 구글 캘린더 자동 동기화
+- [x] 구현: 구글 캘린더 자동 동기화
 - [ ] 배포 확인
