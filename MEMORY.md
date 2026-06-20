@@ -58,3 +58,13 @@
 - **개인미팅 목록의 "대상자별 카드"**: PLAN 데이터 모델상 `personal_meetings`는 미팅 1건당 1행이고 대상자는 자유 텍스트(`contact_name`)라 별도 contacts 테이블처럼 정규화돼 있지 않다. 그래서 목록 화면에서는 `occurred_at desc`로 가져온 뒤 클라이언트에서 `contact_name` 기준으로 첫 번째(=최신) 행만 남기는 방식으로 "대상자별 최근 미팅" 카드를 만들었다 — 별도 그룹핑 쿼리나 뷰를 만들지 않고 가장 단순하게 처리했다.
 - **캘린더 연동 토글의 무반응 버튼 문제**: Stitch 디자인엔 모든 후속작업 입력에 "캘린더에 자동 등록" 토글이 있었지만, 캘린더 연동 슬라이스를 만들기 전까지는 토글을 눌러도 아무 일도 안 일어나는 죽은 UI가 된다. 그래서 업무미팅/개인미팅 작성 화면 모두 이 토글을 마지막 슬라이스(캘린더 동기화)를 구현할 때 한꺼번에 추가했고, 후속작업 내용과 마감일이 둘 다 입력됐을 때만 토글이 보이게 했다(빈 후속작업에 토글이 떠 있는 것도 무의미한 UI라 판단).
 - **OAuth 콜백에서 "누가 연결을 시도했는지"를 알아야 하는데, 서버 라우트엔 로그인 세션이 없다**: 클라이언트의 Supabase 세션은 브라우저 로컬스토리지에만 있어 서버 라우트가 쿠키로 읽을 수 없다. 이 앱은 캘린더 연동 대상이 항상 단일 오너 계정이므로, `/api/auth/google/start`에서 `profiles.role = 'owner'`인 행을 직접 찾아 그 id를 OAuth `state` 파라미터로 넘기고, 콜백에서 그 state를 그대로 `google_tokens.owner_id`로 써서 별도의 로그인 세션 전달 없이 해결했다.
+
+### [2026-06-20] 보안 점검
+- **점검 항목**: .env git 커밋 여부 · NEXT_PUBLIC 키 노출 · 하드코딩 비밀 키 · service_role 클라이언트 사용 · RLS 활성화 · 민감정보 평문 저장(법상 암호화 의무 대상)
+- **결과**: CRITICAL 0건. 모두 통과.
+  - `.env.local`은 git에 커밋된 적 없음(`.gitignore`로 처음부터 제외).
+  - `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY`만 브라우저에 노출되고, `GOOGLE_CLIENT_SECRET`·`SUPABASE_SERVICE_ROLE_KEY`는 `NEXT_PUBLIC_` 접두사 없이 서버 전용으로 분리돼 있음.
+  - `lib/supabase-admin.ts`(service_role)는 `app/api/auth/google/*`·`app/api/calendar/create-event`의 서버 라우트 3곳에서만 import됨 — 클라이언트 컴포넌트에서 쓰는 곳 없음.
+  - `profiles`·`contacts`·`work_meetings`·`personal_meetings`·`google_tokens` 5개 테이블 모두 `enable row level security` 적용 확인.
+  - 6번 검사(민감정보 평문)에서 `card`·`password` 키워드가 잡혔지만 모두 오탐: `card`는 shadcn UI 디자인 토큰(`bg-card`), `password`는 로그인 폼 필드로 `supabase.auth.signInWithPassword()`를 거쳐 Supabase Auth가 처리하므로 우리 DB에 평문으로 저장되지 않음.
+- **남은 위험**: 이름 기반 휴리스틱 검사라 한계가 있음 — 개인미팅의 `health_notes`·`family_info` 등은 법상 암호화 의무 대상(주민번호·카드·생체정보 등)은 아니지만 민감한 개인정보이며, 현재는 평문 저장 + RLS(owner_id 본인만 접근)로만 보호하고 있음. 의무 대상은 아니라 암호화하지 않았지만, 추후 요구사항이 바뀌면 재검토 필요.
